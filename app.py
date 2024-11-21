@@ -32,8 +32,11 @@ swagger_ui = get_swaggerui_blueprint(
 app.register_blueprint(swagger_ui, url_prefix=SWAGGER_URL)
 
 # Register blueprints
-from application.auth.auth_routes import auth_bp
+from application.routes.auth_routes import auth_bp
 app.register_blueprint(auth_bp, url_prefix="/auth")
+from application.routes.product_routes import product_bp
+app.register_blueprint(product_bp)
+
 
 # Ensure database tables are created
 first_request = True
