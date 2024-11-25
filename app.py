@@ -1,13 +1,3 @@
-# from flask import Flask
-# app = Flask(__name__)
-
-# @app.route('/')
-# def hello_world():
-#     return 'Welcome to Team 3'
-
-# if __name__ == '__main__':
-#     app.run()
-
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -25,16 +15,11 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     username = db.Column(db.String(50), nullable=False)
+    address = db.Column(db.String(200), nullable=True)  # Added Address field
 
 # Create the database tables (run once)
 with app.app_context():
     db.create_all()
-
-# You can add real users manually or via an API
-# For example, you can insert users into the database using the following:
-# user1 = User(email='user1@bolton.ac.uk', password=generate_password_hash('password123'), username='user1')
-# db.session.add(user1)
-# db.session.commit()
 
 # Login API
 @app.route('/login', methods=['POST'])
@@ -56,7 +41,8 @@ def login():
                 "status": "success",
                 "user": {
                     "username": user.username,
-                    "email": user.email
+                    "email": user.email,
+                    "address": user.address
                 }
             }), 200
         else:
@@ -64,7 +50,38 @@ def login():
     else:
         return jsonify({"message": "User not found", "status": "failure"}), 404
 
+# Amend User Details API
+@app.route('/update_user/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    data = request.get_json()
+    name = data.get('username')
+    address = data.get('address')
+
+    # Find the user by ID
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"message": "User not found", "status": "failure"}), 404
+
+    # Update the allowed fields (Name and Address)
+    if name:
+        user.username = name
+    if address:
+        user.address = address
+
+    # Save changes to the database
+    db.session.commit()
+
+    return jsonify({
+        "message": "User details updated successfully",
+        "status": "success",
+        "user": {
+            "username": user.username,
+            "email": user.email,
+            "address": user.address
+        }
+    }), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
-
