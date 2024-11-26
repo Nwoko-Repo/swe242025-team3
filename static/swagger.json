@@ -416,6 +416,624 @@
           }
         ]
       }
+    },
+     "/institutions/": {
+      "post": {
+        "summary": "Create a new institution",
+        "description": "Creates a new institution with a name and email.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "example": "Weather Institute" },
+                  "email": { "type": "string", "example": "contact@weatherinst.com" }
+                },
+                "required": ["name", "email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Institution created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "status_code": { "type": "integer" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string", "example": "abc123-xyz456" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or institution already exists",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Name and email are required",
+                  "status_code": 400
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all institutions",
+        "description": "Retrieve a list of all institutions.",
+        "responses": {
+          "200": {
+            "description": "Institutions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "status_code": { "type": "integer" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "institutions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": { "type": "string", "example": "abc123-xyz456" },
+                              "name": { "type": "string", "example": "Weather Institute" },
+                              "email": { "type": "string", "example": "contact@weatherinst.com" },
+                              "subscriptionStatus": { "type": "string", "example": "active" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/institutions/{id}": {
+      "get": {
+        "summary": "Get institution by ID",
+        "description": "Retrieve details of a specific institution by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The ID of the institution"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Institution details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "status_code": { "type": "integer" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string", "example": "abc123-xyz456" },
+                        "name": { "type": "string", "example": "Weather Institute" },
+                        "email": { "type": "string", "example": "contact@weatherinst.com" },
+                        "subscriptionStatus": { "type": "string", "example": "active" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Institution not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Institution not found",
+                  "status_code": 404
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iot-devices/": {
+      "post": {
+        "summary": "Register a new IoT device",
+        "description": "Registers a new IoT device with location, battery status, and transmission interval.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "location": { "type": "string", "example": "Building A, Floor 3" },
+                  "batteryStatus": { "type": "string", "example": "Full" },
+                  "transmissionInterval": { "type": "integer", "example": 30 }
+                },
+                "required": ["location", "batteryStatus", "transmissionInterval"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "IoT Device created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "status_code": { "type": "integer" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "deviceID": { "type": "string", "example": "abc123-xyz456" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "All fields are required",
+                  "status_code": 400
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all IoT devices",
+        "description": "Retrieve a list of all IoT devices.",
+        "responses": {
+          "200": {
+            "description": "IoT Devices retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "status_code": { "type": "integer" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "devices": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "deviceID": { "type": "string", "example": "abc123-xyz456" },
+                              "location": { "type": "string", "example": "Building A, Floor 3" },
+                              "batteryStatus": { "type": "string", "example": "Full" },
+                              "transmissionInterval": { "type": "integer", "example": 30 }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/iot-devices/{device_id}": {
+      "get": {
+        "summary": "Get IoT device by ID",
+        "description": "Retrieve details of a specific IoT device by its ID.",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The ID of the IoT device"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "IoT Device details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "status_code": { "type": "integer" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "deviceID": { "type": "string", "example": "abc123-xyz456" },
+                        "location": { "type": "string", "example": "Building A, Floor 3" },
+                        "batteryStatus": { "type": "string", "example": "Full" },
+                        "transmissionInterval": { "type": "integer", "example": 30 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "IoT Device not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "IoT Device not found",
+                  "status_code": 404
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+     "/api-access/": {
+      "post": {
+        "summary": "Generate API token",
+        "description": "Generates a new API token for an institution.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "institutionID": { "type": "string", "example": "abc123" },
+                  "expirationDays": { "type": "integer", "example": 30 }
+                },
+                "required": ["institutionID"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "API token generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "status_code": { "type": "integer" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessID": { "type": "string", "example": "access-123" },
+                        "token": { "type": "string", "example": "uuid-token" },
+                        "expirationDate": { "type": "string", "example": "2024-12-31T00:00:00Z" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Institution not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Institution not found",
+                  "status_code": 404
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get API tokens",
+        "description": "Retrieve all API tokens for a specific institution.",
+        "parameters": [
+          {
+            "name": "institutionID",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The ID of the institution"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API tokens retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "status_code": { "type": "integer" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "tokens": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "accessID": { "type": "string", "example": "access-123" },
+                              "token": { "type": "string", "example": "uuid-token" },
+                              "expirationDate": { "type": "string", "example": "2024-12-31T00:00:00Z" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Institution not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Institution not found",
+                  "status_code": 404
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api-access/{access_id}": {
+      "delete": {
+        "summary": "Revoke API token",
+        "description": "Revokes an API token by its access ID.",
+        "parameters": [
+          {
+            "name": "access_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The ID of the API token to revoke"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API token revoked successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "API token revoked successfully",
+                  "status_code": 200
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "API token not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "API token not found",
+                  "status_code": 404
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+     "/observations/": {
+      "post": {
+        "summary": "Add a new observation",
+        "description": "Adds a new observation from an IoT device.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "deviceID": { "type": "string", "example": "device-1" },
+                  "timestamp": { "type": "string", "example": "2024-11-14T12:00:00.000Z" },
+                  "temperature": { "type": "number", "example": 25.3 },
+                  "humidity": { "type": "number", "example": 60.5 },
+                  "windSpeed": { "type": "number", "example": 5.2 },
+                  "precipitation": { "type": "number", "example": 1.5 },
+                  "locationCoordinates": { "type": "string", "example": "45.123456, -73.123456" }
+                },
+                "required": ["deviceID", "timestamp", "temperature", "humidity"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Observation added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "status_code": { "type": "integer" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "observationID": { "type": "string", "example": "obs-12345" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "IoT Device not registered",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "IoT Device not registered",
+                  "status_code": 404
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get observations",
+        "description": "Retrieves observations with optional filters (e.g., by device ID or date range).",
+        "parameters": [
+          {
+            "name": "deviceID",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter observations by device ID."
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "example": "2024-01-01T00:00:00.000Z" },
+            "description": "Filter observations starting from this date."
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "example": "2024-12-31T23:59:59.999Z" },
+            "description": "Filter observations ending at this date."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Observations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" },
+                    "status_code": { "type": "integer" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "observations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "observationID": { "type": "string", "example": "obs-12345" },
+                              "timestamp": { "type": "string", "example": "2024-11-14T12:00:00.000Z" },
+                              "temperature": { "type": "number", "example": 25.3 },
+                              "humidity": { "type": "number", "example": 60.5 },
+                              "windSpeed": { "type": "number", "example": 5.2 },
+                              "precipitation": { "type": "number", "example": 1.5 },
+                              "locationCoordinates": { "type": "string", "example": "45.123456, -73.123456" },
+                              "deviceID": { "type": "string", "example": "device-1" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+     "/observations/mock": {
+      "get": {
+        "summary": "Generate mock observations",
+        "description": "Generates random observations for all IoT devices in the database.",
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "example": 5 },
+            "description": "Number of observations to generate per IoT device."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Mock observations generated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Mock observations generated successfully." },
+                    "status_code": { "type": "integer", "example": 201 },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "generatedObservations": { "type": "integer", "example": 50 }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid count parameter.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid count. Must be a positive integer.",
+                  "status_code": 400
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No IoT devices found in the database.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "No IoT devices found in the database.",
+                  "status_code": 404
+                }
+              }
+            }
+          }
+        }
+      }
     }
     
   },

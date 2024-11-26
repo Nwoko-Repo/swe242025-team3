@@ -36,6 +36,12 @@ from application.routes.auth_routes import auth_bp
 app.register_blueprint(auth_bp, url_prefix="/auth")
 from application.routes.product_routes import product_bp
 app.register_blueprint(product_bp)
+from application.routes.institution_routes import institution_bp
+app.register_blueprint(institution_bp)
+from application.routes.iot_device_routes import iot_device_bp
+app.register_blueprint(iot_device_bp)
+from application.routes.api_access_routes import api_access_bp
+app.register_blueprint(api_access_bp)
 
 
 # Ensure database tables are created
