@@ -17,8 +17,6 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "default_secret_key")
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "default_jwt_secret_key")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI", "sqlite:///data.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-# Database setup
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Using SQLite for simplicity
 
 # Initialize extensions
 db = SQLAlchemy(app)
