@@ -7,52 +7,29 @@ class TimestampMixin:
     updatedDate = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 # Customer Model
-class Customer(TimestampMixin, db.Model):
-    __tablename__ = 'customer'
-    customerID = db.Column(db.String, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    email = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, nullable=False)
-    address = db.Column(db.String, nullable=True)
-    accountStatus = db.Column(db.String, default='active')
+class Customer(TimestampMixin,db.Model):
+    __tablename__ = 'customers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.String, nullable=False, unique=True)  # E-commerce system's customer ID
+    stripe_customer_id = db.Column(db.String, nullable=False, unique=True)  # Stripe's customer ID (authToken)
+    email = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=True)
 
     # Relationships
-    orders = db.relationship('Order', backref='customer', lazy=True)
+    payments = db.relationship('Payment', backref='customer', lazy=True)
 
-# Product Model
-class Product(TimestampMixin, db.Model):
-    __tablename__ = 'product'
-    productID = db.Column(db.String, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    description = db.Column(db.String, nullable=True)
-    price = db.Column(db.Float, nullable=False)
-    stockQuantity = db.Column(db.Integer, default=0)
-    category = db.Column(db.String, nullable=True)
+# Payment Model
+class Payment(TimestampMixin,db.Model):
+    __tablename__ = 'payments'
 
-# Order Model
-class Order(TimestampMixin, db.Model):
-    __tablename__ = 'order'
-    orderID = db.Column(db.String, primary_key=True)
-    orderDate = db.Column(db.DateTime, default=datetime.utcnow)
-    totalAmount = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String, default='pending')
-
-    # Foreign Keys
-    customerID = db.Column(db.String, db.ForeignKey('customer.customerID'), nullable=False)
-
-    # Relationships
-    items = db.relationship('OrderItem', backref='order', lazy=True)
-
-# OrderItem Model
-class OrderItem(TimestampMixin, db.Model):
-    __tablename__ = 'order_item'
-    orderItemID = db.Column(db.String, primary_key=True)
-    quantity = db.Column(db.Integer, nullable=False)
-    subtotal = db.Column(db.Float, nullable=False)
-
-    # Foreign Keys
-    productID = db.Column(db.String, db.ForeignKey('product.productID'), nullable=False)
-    orderID = db.Column(db.String, db.ForeignKey('order.orderID'), nullable=False)
+    id = db.Column(db.String, primary_key=True)  # Unique identifier for the payment
+    customer_id = db.Column(db.String, db.ForeignKey('customers.customer_id'), nullable=False)
+    stripe_payment_id = db.Column(db.String, nullable=False)  # Stripe's payment ID
+    stripe_session_id = db.Column(db.String, nullable=False)  # Stripe Checkout session ID
+    order_id = db.Column(db.String, nullable=False)  # Order ID from the e-commerce service
+    amount = db.Column(db.Float, nullable=False)  # Payment amount
+    status = db.Column(db.String, default="pending")  # Payment status
 
 # Institution Model
 class Institution(TimestampMixin, db.Model):
@@ -120,3 +97,4 @@ class AuditLog(TimestampMixin, db.Model):
 
     # Foreign Keys
     adminID = db.Column(db.String, db.ForeignKey('administrator.adminID'), nullable=False)
+

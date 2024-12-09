@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_jwt_extended import JWTManager
 from flask_swagger_ui import get_swaggerui_blueprint
+import stripe
 
 # Load environment variables
 load_dotenv()
@@ -15,6 +16,7 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "default_secret_key")
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "default_jwt_secret_key")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI", "sqlite:///data.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 # Initialize extensions
 db = SQLAlchemy(app)
@@ -32,10 +34,8 @@ swagger_ui = get_swaggerui_blueprint(
 app.register_blueprint(swagger_ui, url_prefix=SWAGGER_URL)
 
 # Register blueprints
-from application.routes.auth_routes import auth_bp
-app.register_blueprint(auth_bp, url_prefix="/auth")
-from application.routes.product_routes import product_bp
-app.register_blueprint(product_bp)
+from application.routes.payment_routes import payment_bp  # Import the payment blueprint
+app.register_blueprint(payment_bp)
 from application.routes.institution_routes import institution_bp
 app.register_blueprint(institution_bp)
 from application.routes.iot_device_routes import iot_device_bp
