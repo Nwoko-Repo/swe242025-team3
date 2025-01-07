@@ -42,6 +42,8 @@ from application.routes.iot_device_routes import iot_device_bp
 app.register_blueprint(iot_device_bp)
 from application.routes.api_access_routes import api_access_bp
 app.register_blueprint(api_access_bp)
+from application.routes.observation_routes import observations_bp  # Import the observations blueprint
+app.register_blueprint(observations_bp)  # Register the blueprint
 
 
 # Ensure database tables are created

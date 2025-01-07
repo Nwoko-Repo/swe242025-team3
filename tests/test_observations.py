@@ -10,12 +10,27 @@ def register_device(test_client):
     }
     response = test_client.post("/iot-devices/", json=device_data)
     assert response.status_code == 201
-    return json.loads(response.data)["data"]["deviceID"]
+    
+    response_data = json.loads(response.data)
+    device_id = response_data["data"]["deviceID"]
+    
+    # Optionally, print the response if needed for debugging
+    print("Register Device Response:", response_data)
+    
+    return device_id, response
+    
+    # return json.loads(response.data)["data"]["deviceID"]
 
 # Test Adding an Observation
 def test_add_observation_success(test_client):
     # Register a mock IoT device
-    device_id = register_device(test_client)
+    device_id, device_response = register_device(test_client)
+    
+    assert device_response.status_code == 201
+    device_response_data = json.loads(device_response.data)
+    assert "deviceID" in device_response_data["data"]
+    print("Device Registered with ID:", device_id)
+
 
     # Mock observation data
     observation_data = {
@@ -30,6 +45,7 @@ def test_add_observation_success(test_client):
 
     # Add observation
     response = test_client.post("/observations/", json=observation_data)
+    print("Check resp::::", response)
     assert response.status_code == 201
     response_data = json.loads(response.data)
     assert response_data["message"] == "Observation added successfully"
@@ -87,6 +103,7 @@ def test_get_observations_success(test_client):
 
     # Retrieve observations
     response = test_client.get("/observations/")
+    print("Get Res: ", response)
     assert response.status_code == 200
     response_data = json.loads(response.data)
     assert response_data["message"] == "Observations retrieved successfully"

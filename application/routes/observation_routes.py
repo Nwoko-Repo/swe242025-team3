@@ -18,6 +18,7 @@ def validate_api_token(token):
 # Add Observation
 @observations_bp.route('/', methods=['POST'])
 def add_observation():
+    print("see..................")
     """Add a new observation from an IoT device."""
     data = request.get_json()
 
