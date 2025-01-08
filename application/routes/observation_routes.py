@@ -2,6 +2,9 @@ from flask import Blueprint, request
 from application.models import Observation, IoTDevice, APIAccess, db
 from application.utils import ResponseHelper
 from datetime import datetime, timedelta
+import random
+
+
 
 observations_bp = Blueprint('observations', __name__, url_prefix='/observations')
 
@@ -98,12 +101,12 @@ def get_observations():
 @observations_bp.route('/mock', methods=['GET'])
 def mock_observations():
     """Generate mock observations for all IoT devices."""
-    token = request.headers.get("Authorization")  # API token should be sent in the header
+    # token = request.headers.get("Authorization")  # API token should be sent in the header
 
     # Validate API token
-    is_valid, message_or_institution_id = validate_api_token(token)
-    if not is_valid:
-        return ResponseHelper.default_response(message_or_institution_id, 403)
+    # is_valid, message_or_institution_id = validate_api_token(token)
+    # if not is_valid:
+    #     return ResponseHelper.default_response(message_or_institution_id, 403)
 
     # Validate count parameter
     count = request.args.get('count', type=int)
