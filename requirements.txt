@@ -17,3 +17,4 @@ Flask-Swagger-UI==4.11.1
 python-dotenv==1.0.0
 stripe==5.5.0
 pytest==8.3.4
+Flask-Cors==5.0.0

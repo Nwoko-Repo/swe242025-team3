@@ -1,14 +1,14 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "API",
-    "description": "API for Institution and Payment.",
+    "title": "RoundSpheres API",
+    "description": "RoundSpheres API for Institution.",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://localhost:5000",
-      "description": "Local server"
+      "url": "http://46.101.92.186:5000",
+      "description": "Prod"
     }
   ],
   "components": {

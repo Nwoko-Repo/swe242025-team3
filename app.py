@@ -5,6 +5,7 @@ import os
 from flask_jwt_extended import JWTManager
 from flask_swagger_ui import get_swaggerui_blueprint
 import stripe
+from flask_cors import CORS
 
 # Load environment variables
 load_dotenv()
@@ -17,6 +18,9 @@ app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "default_jwt_secret_k
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI", "sqlite:///data.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+# Enable CORS for all routes
+CORS(app)
+
 
 # Initialize extensions
 db = SQLAlchemy(app)
